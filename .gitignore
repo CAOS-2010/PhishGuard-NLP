@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Data & Models
+data/raw/
+data/processed/
+models/*.pkl
+# Exclude only the large Random Forest model (30 MB) — not used for inference
+models/random_forest.joblib
+# Small models are tracked: active_model.joblib, svm.joblib, tfidf_vectorizer.joblib
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment variables
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# History database
+history.db

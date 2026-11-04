@@ -1,0 +1,30 @@
+# Web & API
+fastapi==0.141.1
+uvicorn[standard]==0.52.3
+httpx==0.28.1
+pydantic==2.13.4
+
+# Frontend
+streamlit==1.61.1
+plotly==6.9.0
+
+# Machine Learning
+scikit-learn==1.9.0
+joblib==1.5.3
+
+# NLP
+nltk==3.10.3
+
+# Data
+pandas==2.2.3
+numpy==2.1.0
+
+# Email parsing
+extract-msg==0.56.1
+
+# Utilities
+python-dotenv==1.2.3
+
+# Testing
+pytest==9.1.1
+pytest-asyncio==1.4.0
