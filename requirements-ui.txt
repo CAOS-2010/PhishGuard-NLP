@@ -1,0 +1,6 @@
+# UI service dependencies (no ML packages needed — calls API via HTTP)
+streamlit==1.61.1
+plotly==6.9.0
+httpx==0.28.1
+pandas==2.2.3
+python-dotenv==1.2.3
