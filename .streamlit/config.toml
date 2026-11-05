@@ -10,3 +10,10 @@ runOnSave = true
 headless = true
 enableCORS = false
 enableXsrfProtection = false
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = false
+
+[browser]
+gatherUsageStats = false

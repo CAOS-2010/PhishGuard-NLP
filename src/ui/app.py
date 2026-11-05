@@ -12,6 +12,14 @@ section[data-testid="stSidebar"],
 [data-testid="stSidebarNavSeparator"],
 [data-testid="stSidebarNav"] { display:none !important; }
 
+/* Ocultar menú hamburger, footer y botón deploy de Streamlit */
+#MainMenu { visibility:hidden !important; }
+footer { visibility:hidden !important; }
+header { visibility:hidden !important; }
+[data-testid="stToolbar"] { display:none !important; }
+.stDeployButton { display:none !important; }
+[data-testid="stStatusWidget"] { display:none !important; }
+
 /* Base */
 .stApp { background:#D8D8D8; }
 .block-container { padding:28px 36px 36px 36px !important; max-width:100% !important; }
