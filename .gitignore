@@ -48,3 +48,6 @@ logs/
 
 # History database
 history.db
+
+# Evidencias (capturas locales, no van al repo)
+evidencias_sprint*/
