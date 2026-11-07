@@ -173,8 +173,7 @@ def render() -> None:
                         ):
                             st.session_state["last_result"] = res
                             st.session_state["last_analyzed_text"] = item.get("analyzed_text", "")
-                            st.session_state["_open_dialog"] = True
-                            st.rerun()
+                            _dialog_results()
 
                     st.markdown(
                         '<hr style="border:none;border-top:1px solid #C8C8C8;margin:4px 0">',
