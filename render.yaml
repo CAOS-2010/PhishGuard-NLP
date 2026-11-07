@@ -4,12 +4,7 @@ services:
     name: phishguard-api
     runtime: python
     plan: free
-    buildCommand: >
-      pip install -r requirements-api.txt &&
-      python -c "import nltk;
-      nltk.download('stopwords', quiet=True);
-      nltk.download('punkt', quiet=True);
-      nltk.download('punkt_tab', quiet=True)"
+    buildCommand: pip install -r requirements-api.txt && python -m nltk.downloader stopwords punkt punkt_tab
     startCommand: uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
@@ -20,17 +15,8 @@ services:
     name: phishguard-ui
     runtime: python
     plan: free
-    buildCommand: >
-      pip install -r requirements-ui.txt &&
-      python -c "import nltk;
-      nltk.download('stopwords', quiet=True);
-      nltk.download('punkt', quiet=True);
-      nltk.download('punkt_tab', quiet=True)"
-    startCommand: >
-      streamlit run src/ui/app.py
-      --server.port $PORT
-      --server.address 0.0.0.0
-      --server.headless true
+    buildCommand: pip install -r requirements-ui.txt && python -m nltk.downloader stopwords punkt punkt_tab
+    startCommand: streamlit run src/ui/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.9"
