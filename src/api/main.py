@@ -12,8 +12,18 @@ from src.api.schemas import HealthResponse
 from src.data.history import init_db
 
 
+def _ensure_nltk():
+    import nltk
+    for corpus in ("stopwords", "punkt", "punkt_tab"):
+        try:
+            nltk.download(corpus, quiet=True)
+        except Exception:
+            pass
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    _ensure_nltk()
     init_db()
     yield
 
