@@ -69,6 +69,8 @@ class URLAnalysisReport:
 
 
 def _normalize_url(raw: str) -> str:
+    # Strip trailing punctuation that belongs to surrounding prose, not the URL
+    raw = raw.rstrip(".,;:)>\"'")
     if not raw.startswith(("http://", "https://")):
         return "http://" + raw
     return raw
@@ -93,7 +95,7 @@ def _extract_urls(text: str) -> list[str]:
 
 
 def _analyze_single_url(raw_url: str) -> URLRisk:
-    url = _normalize_url(raw_url)
+    url = _normalize_url(raw_url)  # trailing punctuation already stripped
     parsed = urlparse(url)
     domain = parsed.netloc.lower()
     full = url.lower()
@@ -118,10 +120,21 @@ def _analyze_single_url(raw_url: str) -> URLRisk:
     spoofed = []
     for brand in _KNOWN_BRANDS:
         if brand in domain:
-            # Si el dominio NO es exactamente marca.com o marca.com.co es sospechoso
-            official = f"{brand}.com"
-            if not (domain == official or domain == f"www.{official}" or
-                    domain.endswith(f".{official}")):
+            official_variants = (
+                f"{brand}.com",
+                f"{brand}.com.co",
+                f"{brand}.co",
+                f"{brand}.net",
+                f"{brand}.org",
+                f"{brand}.edu.co",
+            )
+            is_official = any(
+                domain == v
+                or domain == f"www.{v}"
+                or domain.endswith(f".{v}")
+                for v in official_variants
+            )
+            if not is_official:
                 spoofed.append(brand)
     result.brand_spoofing = spoofed
 
