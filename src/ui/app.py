@@ -189,8 +189,98 @@ header { visibility:hidden !important; }
 </style>
 """, unsafe_allow_html=True)
 
+import httpx
+from config.settings import API_BASE_URL
+
+
+# ── Pantalla de Login / Registro ──────────────────────────────────────────────
+
+def _auth_page() -> None:
+    st.markdown("""
+    <div style="max-width:420px;margin:40px auto 0 auto;text-align:center">
+      <div style="background:#F5C518;border-radius:18px;width:72px;height:72px;
+                  display:flex;flex-direction:column;align-items:center;justify-content:center;
+                  font-size:24px;font-weight:900;color:#1A1A1A;margin:0 auto 20px auto;
+                  box-shadow:0 4px 18px rgba(245,197,24,0.45)">
+        PG<span style="font-size:9px;font-weight:700;opacity:0.65">NLP</span>
+      </div>
+      <div style="font-size:28px;font-weight:900;color:#1A1A1A;margin-bottom:4px">PhishGuard NLP</div>
+      <div style="font-size:13px;color:#AAAAAA;font-weight:600;margin-bottom:32px">
+        Detección de phishing bancario
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col_l, col_c, col_r = st.columns([1, 2, 1])
+    with col_c:
+        mode = st.radio("", ["Iniciar sesión", "Registrarse"], horizontal=True, label_visibility="collapsed")
+
+        if mode == "Iniciar sesión":
+            with st.form("login_form"):
+                username = st.text_input("Usuario")
+                password = st.text_input("Contraseña", type="password")
+                submitted = st.form_submit_button("Entrar", type="primary", use_container_width=True)
+
+            if submitted:
+                if not username or not password:
+                    st.error("Completa todos los campos.")
+                else:
+                    try:
+                        resp = httpx.post(
+                            f"{API_BASE_URL}/auth/login",
+                            data={"username": username, "password": password},
+                            timeout=10.0,
+                        )
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            st.session_state["token"]    = data["access_token"]
+                            st.session_state["username"] = data["username"]
+                            st.session_state["role"]     = data["role"]
+                            st.rerun()
+                        else:
+                            st.error("Usuario o contraseña incorrectos.")
+                    except Exception:
+                        st.error("No se pudo conectar con el servidor.")
+
+        else:
+            with st.form("register_form"):
+                new_user  = st.text_input("Nombre de usuario")
+                new_email = st.text_input("Correo electrónico")
+                new_pass  = st.text_input("Contraseña (mín. 8 caracteres)", type="password")
+                new_pass2 = st.text_input("Confirmar contraseña", type="password")
+                submitted = st.form_submit_button("Crear cuenta", type="primary", use_container_width=True)
+
+            if submitted:
+                if not all([new_user, new_email, new_pass, new_pass2]):
+                    st.error("Completa todos los campos.")
+                elif new_pass != new_pass2:
+                    st.error("Las contraseñas no coinciden.")
+                elif len(new_pass) < 8:
+                    st.error("La contraseña debe tener al menos 8 caracteres.")
+                else:
+                    try:
+                        resp = httpx.post(
+                            f"{API_BASE_URL}/auth/register",
+                            json={"username": new_user, "email": new_email, "password": new_pass},
+                            timeout=10.0,
+                        )
+                        if resp.status_code == 201:
+                            st.success("Cuenta creada. Inicia sesión.")
+                        else:
+                            detail = resp.json().get("detail", "Error al registrar.")
+                            st.error(detail)
+                    except Exception:
+                        st.error("No se pudo conectar con el servidor.")
+
+
+# ── Verificar sesión ──────────────────────────────────────────────────────────
+
+if "token" not in st.session_state:
+    _auth_page()
+    st.stop()
+
 # ── Logo + header ─────────────────────────────────────────────────────────────
-st.markdown("""
+st.markdown(f"""
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
   <div style="display:flex;align-items:center;gap:18px">
     <div style="background:#F5C518;border-radius:14px;width:58px;height:58px;
@@ -211,12 +301,22 @@ st.markdown("""
       </div>
     </div>
   </div>
-  <div style="font-size:12px;color:#AAAAAA;font-weight:700;letter-spacing:1px;
-              font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif">
-    BIENVENIDOS
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:12px;color:#AAAAAA;font-weight:700;letter-spacing:1px;
+                font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif">
+      {st.session_state.get("username","").upper()}
+    </span>
   </div>
 </div>
 """, unsafe_allow_html=True)
+
+# Botón de cerrar sesión
+col_sp, col_logout = st.columns([10, 1])
+with col_logout:
+    if st.button("Salir", key="logout_btn"):
+        for k in ("token", "username", "role"):
+            st.session_state.pop(k, None)
+        st.rerun()
 
 # ── Navegacion como tabs ──────────────────────────────────────────────────────
 tab_panel, tab_datos = st.tabs([

@@ -35,6 +35,16 @@ def _migrate(con: sqlite3.Connection) -> None:
 def init_db() -> None:
     with _conn() as con:
         con.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id               INTEGER PRIMARY KEY AUTOINCREMENT,
+                username         TEXT    UNIQUE NOT NULL,
+                email            TEXT    UNIQUE NOT NULL,
+                hashed_password  TEXT    NOT NULL,
+                role             TEXT    NOT NULL DEFAULT 'user',
+                created_at       TEXT    NOT NULL
+            )
+        """)
+        con.execute("""
             CREATE TABLE IF NOT EXISTS analyses (
                 id               INTEGER PRIMARY KEY AUTOINCREMENT,
                 analyzed_at      TEXT    NOT NULL,
@@ -209,3 +219,52 @@ def clear_history() -> None:
     init_db()
     with _conn() as con:
         con.execute("DELETE FROM analyses")
+
+
+# ── User CRUD ─────────────────────────────────────────────────────────────────
+
+def create_user(username: str, email: str, hashed_password: str, role: str = "user") -> dict:
+    init_db()
+    with _conn() as con:
+        con.execute(
+            "INSERT INTO users (username, email, hashed_password, role, created_at) VALUES (?,?,?,?,?)",
+            (username, email, hashed_password, role, datetime.now().isoformat(timespec="seconds")),
+        )
+        row = con.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    return dict(row)
+
+
+def get_user_by_username(username: str) -> dict | None:
+    init_db()
+    with _conn() as con:
+        row = con.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    return dict(row) if row else None
+
+
+def list_users() -> list[dict]:
+    init_db()
+    with _conn() as con:
+        rows = con.execute("SELECT * FROM users ORDER BY created_at DESC").fetchall()
+    return [dict(r) for r in rows]
+
+
+def delete_user(user_id: int) -> bool:
+    init_db()
+    with _conn() as con:
+        cursor = con.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    return cursor.rowcount > 0
+
+
+def update_password(username: str, new_hashed_password: str) -> None:
+    init_db()
+    with _conn() as con:
+        con.execute(
+            "UPDATE users SET hashed_password = ? WHERE username = ?",
+            (new_hashed_password, username),
+        )
+
+
+def count_users() -> int:
+    init_db()
+    with _conn() as con:
+        return con.execute("SELECT COUNT(*) FROM users").fetchone()[0]

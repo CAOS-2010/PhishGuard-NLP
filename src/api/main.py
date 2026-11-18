@@ -3,13 +3,15 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from config.settings import API_HOST, API_PORT
+from config.settings import ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_USERNAME, API_HOST, API_PORT
+from src.api.auth import hash_password
 from src.api.routes.analysis import router as analysis_router
+from src.api.routes.auth import router as auth_router
 from src.api.routes.feedback import router as feedback_router
 from src.api.routes.history import router as history_router
 from src.api.routes.stats import router as stats_router
 from src.api.schemas import HealthResponse
-from src.data.history import init_db
+from src.data.history import count_users, create_user, init_db
 
 
 def _ensure_nltk():
@@ -21,10 +23,21 @@ def _ensure_nltk():
             pass
 
 
+def _ensure_admin() -> None:
+    if count_users() == 0:
+        create_user(
+            username=ADMIN_USERNAME,
+            email=ADMIN_EMAIL,
+            hashed_password=hash_password(ADMIN_PASSWORD),
+            role="admin",
+        )
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _ensure_nltk()
     init_db()
+    _ensure_admin()
     yield
 
 
@@ -42,6 +55,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(analysis_router)
 app.include_router(history_router)
 app.include_router(feedback_router)

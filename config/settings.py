@@ -33,6 +33,16 @@ RISK_HIGH = 0.70
 # whose vocabulary partially overlaps with the phishing training corpus.
 DECISION_THRESHOLD = 0.70
 
+# Auth / JWT
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "phishguard-nlp-secret-2026-change-in-production")
+JWT_ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("TOKEN_EXPIRE_MINUTES", "1440"))  # 24 h
+
+# Admin por defecto (se crea si no hay usuarios al arrancar)
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Admin2026!")
+ADMIN_EMAIL    = os.environ.get("ADMIN_EMAIL",    "admin@phishguard.local")
+
 # API
 API_HOST = os.environ.get("API_HOST", "0.0.0.0")
 API_PORT = int(os.environ.get("PORT", os.environ.get("API_PORT", "8036")))
