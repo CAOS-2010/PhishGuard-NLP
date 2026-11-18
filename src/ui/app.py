@@ -319,14 +319,19 @@ with col_logout:
         st.rerun()
 
 # ── Navegacion como tabs ──────────────────────────────────────────────────────
-tab_panel, tab_datos = st.tabs([
-    "  PANEL  ", "  DATOS  "
-])
+_is_admin = st.session_state.get("role") == "admin"
+_tab_labels = ["  PANEL  ", "  DATOS  "] + (["  ADMIN  "] if _is_admin else [])
+_tabs = st.tabs(_tab_labels)
 
-with tab_panel:
+with _tabs[0]:
     from src.ui.pages.home import render
     render()
 
-with tab_datos:
+with _tabs[1]:
     from src.ui.pages.trends import render as render_trends
     render_trends()
+
+if _is_admin:
+    with _tabs[2]:
+        from src.ui.pages.admin import render as render_admin
+        render_admin()
