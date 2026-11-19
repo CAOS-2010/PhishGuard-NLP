@@ -197,6 +197,12 @@ from config.settings import API_BASE_URL
 
 def _auth_page() -> None:
     st.markdown("""
+    <style>
+    .stButton > button[kind="primary"] {
+        background:#1A1A1A !important; color:#F5C518 !important;
+    }
+    .stButton > button[kind="primary"]:hover { background:#333333 !important; }
+    </style>
     <div style="max-width:420px;margin:40px auto 0 auto;text-align:center">
       <div style="background:#F5C518;border-radius:18px;width:72px;height:72px;
                   display:flex;flex-direction:column;align-items:center;justify-content:center;
