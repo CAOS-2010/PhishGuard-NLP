@@ -213,6 +213,7 @@ def _auth_page() -> None:
                 username = st.text_input("Usuario")
                 password = st.text_input("Contraseña", type="password")
                 submitted = st.form_submit_button("Entrar", type="primary", use_container_width=True)
+            st.markdown('<p style="color:red;font-size:10px;text-align:center">v2</p>', unsafe_allow_html=True)
 
             if submitted:
                 if not username or not password:
