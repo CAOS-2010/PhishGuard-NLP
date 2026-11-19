@@ -97,30 +97,21 @@ header { visibility:hidden !important; }
 }
 
 /* ── Botones ─────────────────────────────────────────── */
-.stButton > button[kind="primary"],
-[data-testid="stBaseButton-primary"] {
-    background:#F5C518 !important; color:#1A1A1A !important;
-    border:none !important; font-weight:900 !important; border-radius:999px !important;
+.stButton > button,
+[data-testid="stBaseButton-primary"],
+[data-testid="stBaseButton-secondary"] {
+    border-radius:999px !important; font-weight:900 !important;
     font-size:12px !important; letter-spacing:1px !important; text-transform:uppercase !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
-    transition: background 0.15s ease !important;
+    transition: opacity 0.15s ease !important;
 }
-.stButton > button[kind="primary"]:hover,
-[data-testid="stBaseButton-primary"]:hover { background:#D4A800 !important; }
-[data-testid="stBaseButton-primary"] p,
-[data-testid="stBaseButton-primary"] span,
-[data-testid="stBaseButton-primary"] div {
-    font-weight:900 !important;
-    border-radius:999px !important;
-    color:#1A1A1A !important;
-}
-.stButton > button[kind="secondary"] {
+.stButton > button[kind="secondary"],
+[data-testid="stBaseButton-secondary"] {
     background:#E0E0E0 !important; border:2px solid #C8C8C8 !important;
-    color:#1A1A1A !important; border-radius:8px !important; font-weight:700 !important;
-    font-size:12px !important; text-transform:uppercase !important; letter-spacing:0.5px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+    color:#1A1A1A !important; border-radius:8px !important;
 }
-.stButton > button[kind="secondary"]:hover { border-color:#F5C518 !important; background:#FFFDE7 !important; }
+.stButton > button[kind="secondary"]:hover,
+[data-testid="stBaseButton-secondary"]:hover { border-color:#F5C518 !important; background:#FFFDE7 !important; }
 
 /* ── Inputs ──────────────────────────────────────────── */
 .stTextInput input, .stTextArea textarea {
