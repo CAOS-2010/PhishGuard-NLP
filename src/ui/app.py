@@ -99,20 +99,20 @@ header { visibility:hidden !important; }
 /* ── Botones ─────────────────────────────────────────── */
 .stButton > button[kind="primary"],
 [data-testid="stBaseButton-primary"] {
-    background:#1A1A1A !important; color:#F5C518 !important;
+    background:#F5C518 !important; color:#1A1A1A !important;
     border:none !important; font-weight:900 !important; border-radius:999px !important;
     font-size:12px !important; letter-spacing:1px !important; text-transform:uppercase !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
     transition: background 0.15s ease !important;
 }
 .stButton > button[kind="primary"]:hover,
-[data-testid="stBaseButton-primary"]:hover { background:#333333 !important; }
+[data-testid="stBaseButton-primary"]:hover { background:#D4A800 !important; }
 [data-testid="stBaseButton-primary"] p,
 [data-testid="stBaseButton-primary"] span,
 [data-testid="stBaseButton-primary"] div {
     font-weight:900 !important;
     border-radius:999px !important;
-    color:#F5C518 !important;
+    color:#1A1A1A !important;
 }
 .stButton > button[kind="secondary"] {
     background:#E0E0E0 !important; border:2px solid #C8C8C8 !important;
@@ -280,21 +280,6 @@ def _auth_page() -> None:
 if "token" not in st.session_state:
     _auth_page()
     st.stop()
-
-# Restaurar botones amarillos para el app principal
-st.markdown("""
-<style>
-.stButton > button[kind="primary"],
-[data-testid="stBaseButton-primary"] {
-    background:#F5C518 !important; color:#1A1A1A !important;
-}
-.stButton > button[kind="primary"]:hover,
-[data-testid="stBaseButton-primary"]:hover { background:#D4A800 !important; }
-[data-testid="stBaseButton-primary"] p,
-[data-testid="stBaseButton-primary"] span,
-[data-testid="stBaseButton-primary"] div { color:#1A1A1A !important; }
-</style>
-""", unsafe_allow_html=True)
 
 # ── Logo + header ─────────────────────────────────────────────────────────────
 st.markdown(f"""
