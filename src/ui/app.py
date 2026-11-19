@@ -211,9 +211,9 @@ def _auth_page() -> None:
     </div>
     """, unsafe_allow_html=True)
 
-    col_l, col_c, col_r = st.columns([1, 2, 1])
+    col_l, col_c, col_r = st.columns([3, 2, 3])
     with col_c:
-        mode = st.radio("", ["Iniciar sesión", "Registrarse"], horizontal=True, label_visibility="collapsed")
+        mode = st.radio("Modo", ["Iniciar sesión", "Registrarse"], horizontal=True, label_visibility="collapsed")
 
         if mode == "Iniciar sesión":
             with st.form("login_form"):
