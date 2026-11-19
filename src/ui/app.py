@@ -97,20 +97,20 @@ header { visibility:hidden !important; }
 }
 
 /* ── Botones ─────────────────────────────────────────── */
-.stButton > button,
-[data-testid="stBaseButton-primary"],
-[data-testid="stBaseButton-secondary"] {
-    border-radius:999px !important; font-weight:900 !important;
+[data-testid="stBaseButton-primary"] {
+    background:#F5C518 !important; color:#1A1A1A !important;
+    border:none !important; border-radius:999px !important; font-weight:900 !important;
     font-size:12px !important; letter-spacing:1px !important; text-transform:uppercase !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
-    transition: opacity 0.15s ease !important;
 }
-.stButton > button[kind="secondary"],
+[data-testid="stBaseButton-primary"]:hover { background:#D4A800 !important; }
+[data-testid="stBaseButton-primary"] p { color:#1A1A1A !important; }
 [data-testid="stBaseButton-secondary"] {
     background:#E0E0E0 !important; border:2px solid #C8C8C8 !important;
-    color:#1A1A1A !important; border-radius:8px !important;
+    color:#1A1A1A !important; border-radius:8px !important; font-weight:700 !important;
+    font-size:12px !important; text-transform:uppercase !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
 }
-.stButton > button[kind="secondary"]:hover,
 [data-testid="stBaseButton-secondary"]:hover { border-color:#F5C518 !important; background:#FFFDE7 !important; }
 
 /* ── Inputs ──────────────────────────────────────────── */
