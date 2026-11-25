@@ -62,7 +62,7 @@ app.include_router(feedback_router)
 app.include_router(stats_router)
 
 
-@app.get("/health", response_model=HealthResponse, tags=["System"])
+@app.api_route("/health", methods=["GET", "HEAD"], response_model=HealthResponse, tags=["System"])
 def health() -> HealthResponse:
     from config.settings import ACTIVE_MODEL_FILE
     return HealthResponse(
